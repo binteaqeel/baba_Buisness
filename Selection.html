@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculator</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      background: linear-gradient(to right, #e0c3fc, #8ec5fc);
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    /* Stylish Navbar */
+    .navbar {
+      width: 100%;
+      padding: 18px 0;
+      background: rgba(103, 126, 234, 0.9);
+      backdrop-filter: blur(6px);
+      color: white;
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-align: center;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      text-transform: uppercase;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      transition: all 0.3s ease-in-out;
+    }
+
+    .navbar:hover {
+      color: #ffe26f;
+      text-shadow: 0 0 10px #fff, 0 0 20px #ffe26f, 0 0 30px #ff8c00;
+      letter-spacing: 3px;
+    }
+
+    /* Buttons */
+    .content {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    button {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      padding: 15px 40px;
+      font-size: 18px;
+      font-weight: 600;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      margin: 15px 0;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease-in-out;
+      width: 250px;
+      text-align: center;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+      background: linear-gradient(135deg, #764ba2, #667eea);
+      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.3);
+    }
+
+    button:active {
+      transform: scale(0.98);
+    }
+
+    /* Footer */
+    .footer {
+      width: 100%;
+      padding: 15px 0;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      text-align: center;
+      font-size: 14px;
+      box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.2);
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <div class="navbar">HSD Table Calculation</div>
+
+  <!-- Main Content -->
+  <div class="content">
+    <button onclick="window.location.href='Above_85_Degrees.html'">Above 85 Degrees</button>
+    <button onclick="window.location.href='Below_85_Degrees.html'">Below 85 Degrees</button>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">&copy; By Syed Aqeel Ahmed</div>
+</body>
+</html>
