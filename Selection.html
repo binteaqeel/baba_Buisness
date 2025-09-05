@@ -51,30 +51,31 @@
     }
 
     button {
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      color: white;
-      padding: 15px 40px;
-      font-size: 18px;
-      font-weight: 600;
-      border: none;
-      border-radius: 50px;
-      cursor: pointer;
-      margin: 15px 0;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-      transition: all 0.3s ease-in-out;
-      width: 250px;
-      text-align: center;
-    }
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    padding: 15px 60px;   /* more padding for length */
+    font-size: 18px;
+    font-weight: 600;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    margin: 15px 0;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease-in-out;
+    min-width: 500px;     /* ensures button stays long */
+    text-align: center;
+    white-space: nowrap;  /* prevents text wrapping */
+  }
 
     button:hover {
-      transform: scale(1.05);
-      background: linear-gradient(135deg, #764ba2, #667eea);
-      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.3);
-    }
+    transform: scale(1.05);
+    background: linear-gradient(135deg, #764ba2, #667eea);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.3);
+  }
 
-    button:active {
-      transform: scale(0.98);
-    }
+  button:active {
+    transform: scale(0.98);
+  }
 
     /* Footer */
     .footer {
@@ -94,8 +95,8 @@
 
   <!-- Main Content -->
   <div class="content">
-    <button onclick="window.location.href='Above_85_Degrees.html'">Above 85 Degrees</button>
-    <button onclick="window.location.href='Below_85_Degrees.html'">Below 85 Degrees</button>
+    <button onclick="window.location.href='Above_85_Degrees.html'">Above 85 °F / 29.44 °C</button><br>
+    <button onclick="window.location.href='Below_85_Degrees.html'">Below 85 °F / 29.44 °C</button>
   </div>
 
   <!-- Footer -->
