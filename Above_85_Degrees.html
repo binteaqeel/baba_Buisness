@@ -140,17 +140,19 @@
 </head>
 <body>
   <!-- Navbar -->
-  <div class="navbar">Above 85 Degrees</div>
+  <div class="navbar">Above 85 °F / 29.44 °C</div>
 
   <!-- Form Content -->
   <form>
     <h3>Tanker Data</h3>
     <div class="row">
       <div class="field"><label>Supplier:</label><input type="text" required id="supplier"></div>
-      <div class="field"><label>Ordered Quantity @ 85 Degrees:</label><input type="number" required id="ordered_quantity"></div>
+      <div class="field"><label>Ordered Quantity @ 85°F:</label><input type="number" required id="ordered_quantity"></div>
       <div class="field"><label>Date:</label><input type="date" required id="date"></div>
       <div class="field"><label>Tanker Number:</label><input type="text" required id="tanker_number"></div>
-      <div class="field"><label>No. of Chambers:</label><input type="number" required id="no_of_chambers" min="1" max="4"></div>
+      <div class="field"><label>Tanker Cal. Cert. No.:</label><input type="text" required id="tanker_cert_num"></div>
+      <div class="field"><label>Calibration Validity Date:</label><input type="date" required id="cal_validity_date"></div>
+      <div class="field"><label>No. of Chambers:</label><input type="number" required value="0" id="no_of_chambers" min="1" max="4"></div>
     </div>
 
     <h3>Tanker Dip Chart Information</h3>
@@ -186,28 +188,28 @@
     <h4>For Chamber 1</h4>
     <div class="row">
       <div class="field"><label>Product Dip:</label><input type="number" required value="0" id="product_dip_chamber_1"></div>
-      <div class="field"><label>Temperature in C:</label><input type="number" required value="0" id="temperature_in_C_chamber_1"></div>
+      <div class="field"><label>Temperature in °C:</label><input type="number" required value="0" id="temperature_in_C_chamber_1"></div>
       <div class="field"><label>Density:</label><input type="number" required value="0" id="density_chamber_1"></div>
     </div>
 
     <h4>For Chamber 2</h4>
     <div class="row">
       <div class="field"><label>Product Dip:</label><input type="number" required value="0" id="product_dip_chamber_2"></div>
-      <div class="field"><label>Temperature in C:</label><input type="number" required value="0" id="temperature_in_C_chamber_2"></div>
+      <div class="field"><label>Temperature in °C:</label><input type="number" required value="0" id="temperature_in_C_chamber_2"></div>
       <div class="field"><label>Density:</label><input type="number" required value="0" id="density_chamber_2"></div>
     </div>
 
     <h4>For Chamber 3</h4>
     <div class="row">
       <div class="field"><label>Product Dip:</label><input type="number" required value="0" id="product_dip_chamber_3"></div>
-      <div class="field"><label>Temperature in C:</label><input type="number" required value="0" id="temperature_in_C_chamber_3"></div>
+      <div class="field"><label>Temperature in °C:</label><input type="number" required value="0" id="temperature_in_C_chamber_3"></div>
       <div class="field"><label>Density:</label><input type="number" required value="0" id="density_chamber_3"></div>
     </div>
 
     <h4>For Chamber 4</h4>
     <div class="row">
       <div class="field"><label>Product Dip:</label><input type="number" required value="0" id="product_dip_chamber_4"></div>
-      <div class="field"><label>Temperature in C:</label><input type="number" required value="0" id="temperature_in_C_chamber_4"></div>
+      <div class="field"><label>Temperature in °C:</label><input type="number" required value="0" id="temperature_in_C_chamber_4"></div>
       <div class="field"><label>Density:</label><input type="number" required value="0" id="density_chamber_4"></div>
     </div>
 
@@ -216,7 +218,7 @@
     <div class="row">
       <div class="field"><label>Reference Dip:</label><input type="number" required value="0" id="receipt_reference_dip_chamber_1"></div>
       <div class="field"><label>Product Dip:</label><input type="number" required value="0" id="receipt_product_dip_chamber_1"></div>
-      <div class="field"><label>Product Recieving Temp in C:</label><input type="number" required value="0" id="receipt_temperature_in_C_chamber_1"></div>
+      <div class="field"><label>Product Recieving Temp in °C:</label><input type="number" required value="0" id="receipt_temperature_in_C_chamber_1"></div>
       <div class="field"><label>Density:</label><input type="number" required value="0" id="receipt_density_chamber_1"></div>
     </div>
 
@@ -224,7 +226,7 @@
     <div class="row">
       <div class="field"><label>Reference Dip:</label><input type="number" required value="0" id="receipt_reference_dip_chamber_2"></div>
       <div class="field"><label>Product Dip:</label><input type="number" required value="0" id="receipt_product_dip_chamber_2"></div>
-      <div class="field"><label>Product Recieving Temp in C:</label><input type="number" required value="0" id="receipt_temperature_in_C_chamber_2"></div>
+      <div class="field"><label>Product Recieving Temp in °C:</label><input type="number" required value="0" id="receipt_temperature_in_C_chamber_2"></div>
       <div class="field"><label>Density:</label><input type="number" required value="0" id="receipt_density_chamber_2"></div>
     </div>
 
@@ -232,7 +234,7 @@
     <div class="row">
       <div class="field"><label>Reference Dip:</label><input type="number" required value="0" id="receipt_reference_dip_chamber_3"></div>
       <div class="field"><label>Product Dip:</label><input type="number" required value="0" id="receipt_product_dip_chamber_3"></div>
-      <div class="field"><label>Product Recieving Temp in C:</label><input type="number" required value="0" id="receipt_temperature_in_C_chamber_3"></div>
+      <div class="field"><label>Product Recieving Temp in °C:</label><input type="number" required value="0" id="receipt_temperature_in_C_chamber_3"></div>
       <div class="field"><label>Density:</label><input type="number" required value="0" id="receipt_density_chamber_3"></div>
     </div>
 
@@ -240,7 +242,7 @@
     <div class="row">
       <div class="field"><label>Reference Dip:</label><input type="number" required value="0" id="receipt_reference_dip_chamber_4"></div>
       <div class="field"><label>Product Dip:</label><input type="number" required value="0" id="receipt_product_dip_chamber_4"></div>
-      <div class="field"><label>Product Recieving Temp in C:</label><input type="number" required value="0" id="receipt_temperature_in_C_chamber_4"></div>
+      <div class="field"><label>Product Recieving Temp in °C:</label><input type="number" required value="0" id="receipt_temperature_in_C_chamber_4"></div>
       <div class="field"><label>Density:</label><input type="number" required value="0" id="receipt_density_chamber_4"></div>
     </div>
 
@@ -256,8 +258,23 @@
       <div class="field"><label>Tare Weight:</label><input type="number" required value="0" id="Recieved_tare_weight"></div>
     </div>
 
+    <h3>HUB Diesel Flow Meter & Tank Level Reading</h3>
+    <h4>For Chamber 2</h4>
+    <div class="row">
+      <div class="field"><label>Flow meter reading before tanker decanting:</label><input type="number" required value="0" id="flow_meter_reading_before_chamber_2"></div>
+      <div class="field"><label>Flow meter reading after tanker decanting:</label><input type="number" required value="0" id="flow_meter_reading_after_chamber_2"></div>
+      <div class="field"><label>Tank level before tanker decanting:</label><input type="number" required value="0" id="tank_level_before_chamber_2"></div>
+      <div class="field"><label>Tank level after tanker decanting:</label><input type="number" required value="0" id="tank_level_after_chamber_2"></div>
+    </div>
+
+    <h4>For Chamber 1</h4>
+    <div class="row">
+      <div class="field"><label>Flow meter reading after tanker decanting:</label><input type="number" required value="0" id="flow_meter_reading_after_chamber_1"></div>
+      <div class="field"><label>Tank level after tanker decanting:</label><input type="number" required value="0" id="tank_level_after_chamber_1"></div>
+    </div>
+
     <br>
-    <button type="button" onclick="check()">Submit & Genrate Report</button>
+    <button type="button" onclick="check()">Submit & Generate Report</button>
     <p id="Check"></p>
   </form>
 
