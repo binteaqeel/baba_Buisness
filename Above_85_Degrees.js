@@ -1,8 +1,9 @@
-// Fully fixed version of your JS with per-table headings (no main heading)
+// Fully fixed version of your JS with per-table headings + Hub Diesel Flow Meter integration
+// + Fix for Tanker Cert & Cal. Validity not printing
 
 function num(id) {
   const el = document.getElementById(id);
-  if (!el) throw new Error(`Missing element with id: ${id}`);
+  if (!el) return 0;
   const v = parseFloat(el.value);
   return isNaN(v) ? 0 : v;
 }
@@ -28,12 +29,18 @@ function getHSDValue(density) {
 
 function check() {
   try {
-    // Basic
+    // Basic info
     const ordered_quantity = num("ordered_quantity");
-    const supplier = document.getElementById("supplier").value || "";
-    const date = document.getElementById("date").value || "";
-    const tankerNumber = document.getElementById("tanker_number").value || "";
-    const No_Of_Chambers = Math.max(1, Math.min(4, parseInt(document.getElementById("no_of_chambers").value || "4", 10)));
+    const supplier = document.getElementById("supplier")?.value || "N/A";
+    const date = document.getElementById("date")?.value || "N/A";
+    const tankerNumber = document.getElementById("tanker_number")?.value || "N/A";
+    const tankerCertNum = document.getElementById("tanker_cert_num")?.value || "N/A";
+    const calValidityDate = document.getElementById("cal_validity_date")?.value || "N/A";
+
+    const No_Of_Chambers = Math.max(
+      1,
+      Math.min(4, parseInt(document.getElementById("no_of_chambers")?.value || "4", 10))
+    );
 
     // Per-mm values
     const per_mm = [1, 2, 3, 4].map((i) => {
@@ -102,7 +109,52 @@ function check() {
     const delivery_product_MT = (delivery_product_weight * delivery_avg_density) / 1000;
     const received_product_MT = (received_product_weight * received_avg_density) / 1000;
 
-    // PDF
+    // --- Hub Diesel Flow Meter & Tank Level Reading (NEW PART) ---
+
+    // Chamber-2
+    const flow_meter_reading_before_chamber_2 = num("flow_meter_reading_before_chamber_2");
+    const flow_meter_reading_after_chamber_2 = num("flow_meter_reading_after_chamber_2");
+    const tank_level_before_chamber_2 = num("tank_level_before_chamber_2");
+    const tank_level_after_chamber_2 = num("tank_level_after_chamber_2");
+
+    const decanted_ltr_chamber_2 = flow_meter_reading_after_chamber_2 - flow_meter_reading_before_chamber_2;
+    const tank_level_rise_chamber_2 = tank_level_after_chamber_2 - tank_level_before_chamber_2;
+    const decanted_litre_converted_chamber_2 = tank_level_rise_chamber_2 * 38250;
+    const diff_decanted_ltr_minus_product_recieved_quantitiy_chamber_2 =
+      decanted_ltr_chamber_2 - qtyLtrReceipt[1];
+    const diff_decanted_ltr_converterted_minus_product_recieved_quantity_chamber_2 =
+      decanted_litre_converted_chamber_2 - qtyLtrReceipt[1];
+
+    // Chamber-1
+    const flow_meter_reading_after_chamber_1 = num("flow_meter_reading_after_chamber_1");
+    const flow_meter_reading_before_chamber_1 = flow_meter_reading_after_chamber_2;
+    const tank_level_after_chamber_1 = num("tank_level_after_chamber_1");
+    const tank_level_before_chamber_1 = tank_level_after_chamber_2;
+
+    const decanted_ltr_chamber_1 = flow_meter_reading_after_chamber_1 - flow_meter_reading_before_chamber_1;
+    const tank_level_rise_chamber_1 = tank_level_after_chamber_1 - tank_level_before_chamber_1;
+    const decanted_litre_converted_chamber_1 = tank_level_rise_chamber_1 * 38250;
+    const diff_decanted_ltr_minus_product_recieved_quantitiy_chamber_1 =
+      decanted_ltr_chamber_1 - qtyLtrReceipt[0];
+    const diff_decanted_ltr_converterted_minus_product_recieved_quantity_chamber_1 =
+      decanted_litre_converted_chamber_1 - qtyLtrReceipt[0];
+
+    // Final Difference from Flow meter readings
+    const reading_after_tanker_decanting = flow_meter_reading_after_chamber_1;
+    const reading_before_tanker_decanting = flow_meter_reading_before_chamber_2;
+    const total_volume_recived_by_flow_meter =
+      reading_after_tanker_decanting - reading_before_tanker_decanting;
+    const diff_Flow_meter_reading = total_volume_recived_by_flow_meter - Natural_Receipt_QTY_Ltr;
+
+    // Diesel Tank Level
+    const tank_level_after_tanker_decanting = tank_level_after_chamber_1;
+    const tank_level_before_tanker_decanting = tank_level_before_chamber_2;
+    const LOFO_tanker_rise_after_tanker_decanting =
+      tank_level_after_tanker_decanting - tank_level_before_tanker_decanting;
+    const LOFO_converted = LOFO_tanker_rise_after_tanker_decanting * 38250;
+    const Deisel_tank_level_difference = LOFO_converted - Natural_Receipt_QTY_Ltr;
+
+    // --- PDF ---
     if (!window.jspdf || !window.jspdf.jsPDF) {
       alert("jsPDF failed to load. Check the script URLs.");
       return;
@@ -110,11 +162,12 @@ function check() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
 
-    // --- Header table ---
+    // --- Header ---
     doc.setFontSize(10);
     const headerRows = [
       ["Supplier", supplier, "Date", date],
       ["Tanker No.", tankerNumber, "Chambers", String(No_Of_Chambers)],
+      ["Tanker Cal. Cert. No.", tankerCertNum, "Cal. Validity Date", calValidityDate],
       ["Ordered Qty @85°F (L)", ordered_quantity.toFixed(2), "", ""],
     ];
     doc.autoTable({
@@ -125,7 +178,7 @@ function check() {
       headStyles: { fillColor: [102, 126, 234] },
     });
 
-    // --- Dispatch Table ---
+    // --- Dispatch ---
     doc.setFontSize(11);
     doc.text("Dispatch Particulars", 14, doc.lastAutoTable.finalY + 6);
     const dispatchBody = [1, 2, 3, 4].map((i, idx) => [
@@ -144,7 +197,7 @@ function check() {
       headStyles: { fillColor: [102, 126, 234] },
     });
 
-    // --- Receipt Table ---
+    // --- Receipt ---
     doc.setFontSize(11);
     doc.text("Receipt Particulars", 14, doc.lastAutoTable.finalY + 6);
     const receiptBody = [1, 2, 3, 4].map((i, idx) => [
@@ -163,7 +216,7 @@ function check() {
       headStyles: { fillColor: [102, 126, 234] },
     });
 
-    // --- Weighbridge Table ---
+    // --- Weighbridge ---
     doc.setFontSize(11);
     doc.text("Weighbridge Table", 14, doc.lastAutoTable.finalY + 6);
     const wbBody = [
@@ -178,7 +231,7 @@ function check() {
       headStyles: { fillColor: [102, 126, 234] },
     });
 
-    // --- 85°F Calc Table ---
+    // --- 85°F Calc ---
     doc.setFontSize(11);
     doc.text("HSD 85°F Calculation Against Ordered 85°F Qty", 14, doc.lastAutoTable.finalY + 6);
     const calcBody = [
@@ -207,15 +260,93 @@ function check() {
       headStyles: { fillColor: [102, 126, 234] },
     });
 
-    // Footer
-    doc.setFontSize(9);
-    doc.text("Generated Report - By Syed Aqeel Ahmed", 14, doc.internal.pageSize.height - 8);
+    // ------------------------- PAGE 2 -------------------------
+    doc.addPage();
 
-    doc.save("HSD_Above_85_Report.pdf");
+    // 1) CHAMBER-2
+    doc.setFontSize(12);
+    doc.text("Hub Diesel Flow Meter & Tank Level Reading - Chamber 2", 14, 20);
+
+    doc.autoTable({
+      startY: 23, // tighter
+      head: [["Description", "Value"]],
+      body: [
+        ["Flow Meter reading Before Tanker decanting", flow_meter_reading_before_chamber_2.toFixed(2)],
+        ["Flow Meter reading After Tanker decanting", flow_meter_reading_after_chamber_2.toFixed(2)],
+        ["Tank Level before Tanker decanting", tank_level_before_chamber_2.toFixed(2)],
+        ["Tank Level after Tanker decanting", tank_level_after_chamber_2.toFixed(2)],
+        ["Decanted Ltr from flow meter", decanted_ltr_chamber_2.toFixed(2)],
+        ["TK Level rise", tank_level_rise_chamber_2.toFixed(2)],
+        ["Decanted Ltr from tank level", decanted_litre_converted_chamber_2.toFixed(2)],
+        ["Diff:", diff_decanted_ltr_minus_product_recieved_quantitiy_chamber_2.toFixed(2)],
+        ["Final Difference", diff_decanted_ltr_converterted_minus_product_recieved_quantity_chamber_2.toFixed(2)],
+      ],
+      styles: { fontSize: 9, cellPadding: 1 }, // compress rows a bit
+      headStyles: { fillColor: [102, 126, 234] },
+    });
+
+    // 2) CHAMBER-1
+    doc.setFontSize(12);
+    doc.text("Hub Diesel Flow Meter & Tank Level Reading - Chamber 1", 14, doc.lastAutoTable.finalY + 6);
+
+    doc.autoTable({
+      startY: doc.lastAutoTable.finalY + 10,
+      head: [["Description", "Value"]],
+      body: [
+        ["Flow Meter reading Before Tanker decanting", flow_meter_reading_before_chamber_1.toFixed(2)],
+        ["Flow Meter reading After Tanker decanting", flow_meter_reading_after_chamber_1.toFixed(2)],
+        ["Tank Level before Tanker decanting", tank_level_before_chamber_1.toFixed(2)],
+        ["Tank Level after Tanker decanting", tank_level_after_chamber_1.toFixed(2)],
+        ["Decanted Ltr from flow meter", decanted_ltr_chamber_1.toFixed(2)],
+        ["TK Level rise", tank_level_rise_chamber_1.toFixed(2)],
+        ["Decanted Ltr from tank level", decanted_litre_converted_chamber_1.toFixed(2)],
+        ["Diff:", diff_decanted_ltr_minus_product_recieved_quantitiy_chamber_1.toFixed(2)],
+        ["Final Difference", diff_decanted_ltr_converterted_minus_product_recieved_quantity_chamber_1.toFixed(2)],
+      ],
+      styles: { fontSize: 9, cellPadding: 1 },
+      headStyles: { fillColor: [102, 126, 234] },
+    });
+
+    // 3) Final difference (Flow meter)
+    doc.setFontSize(12);
+    doc.text("Final Difference by Flow Meter", 14, doc.lastAutoTable.finalY + 6);
+
+    doc.autoTable({
+      startY: doc.lastAutoTable.finalY + 10,
+      head: [["Description", "Value"]],
+      body: [
+        ["Reading after Tanker decanting", reading_after_tanker_decanting.toFixed(2)],
+        ["Reading before Tanker decanting", reading_before_tanker_decanting.toFixed(2)],
+        ["Total Volume Received by Flow Meter", total_volume_recived_by_flow_meter.toFixed(2)],
+        ["Product Received by Dip Method", Natural_Receipt_QTY_Ltr.toFixed(2)],
+        ["Difference", diff_Flow_meter_reading.toFixed(2)],
+      ],
+      styles: { fontSize: 9, cellPadding: 1 },
+      headStyles: { fillColor: [102, 126, 234] },
+    });
+
+    // 4) Diesel Tank Level Difference
+    doc.setFontSize(12);
+    doc.text("Diesel Tank Level Difference", 14, doc.lastAutoTable.finalY + 6);
+
+    doc.autoTable({
+      startY: doc.lastAutoTable.finalY + 10,
+      head: [["Description", "Value"]],
+      body: [
+        ["Tank Level after Tanker decanting", tank_level_after_tanker_decanting.toFixed(2)],
+        ["Tank Level before Tanker decanting", tank_level_before_tanker_decanting.toFixed(2)],
+        ["LOFO Tank Rise", LOFO_tanker_rise_after_tanker_decanting.toFixed(2)],
+        ["LOFO Converted", LOFO_converted.toFixed(2)],
+        ["Product Received by Dip Method", Natural_Receipt_QTY_Ltr.toFixed(2)],
+        ["Difference", Deisel_tank_level_difference.toFixed(2)],
+      ],
+      styles: { fontSize: 9, cellPadding: 1 },
+      headStyles: { fillColor: [102, 126, 234] },
+    });
+
+    doc.save("HSD_Report.pdf");
   } catch (err) {
     console.error(err);
-    if (!/out of supported range|jsPDF/.test(err.message)) {
-      alert(`Error: ${err.message}`);
-    }
+    alert("Error: " + err.message);
   }
 }
