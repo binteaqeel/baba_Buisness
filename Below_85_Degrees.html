@@ -3,19 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>404 Error - Page Not Found</title>
+  <title>Below 85 °F / 29.44 °C</title>
   <style>
     body {
       margin: 0;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      align-items: center;
       background: linear-gradient(to right, #e0c3fc, #8ec5fc);
       font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      color: white;
-      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
     /* Navbar */
@@ -24,11 +20,13 @@
       padding: 18px 0;
       background: rgba(103, 126, 234, 0.9);
       backdrop-filter: blur(6px);
+      color: white;
       font-size: 24px;
       font-weight: 700;
       letter-spacing: 2px;
-      text-transform: uppercase;
+      text-align: center;
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      text-transform: uppercase;
       position: sticky;
       top: 0;
       z-index: 1000;
@@ -41,45 +39,82 @@
       letter-spacing: 3px;
     }
 
-    /* Content */
-    .content {
-      flex-grow: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
+    /* Form Styling */
+    form {
+      background: white;
       padding: 20px;
+      margin: 20px;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      width: 95%;
+      max-width: 1100px;
+      overflow-y: auto;
+      max-height: 80vh;
     }
 
-    .error-code {
-      font-size: 120px;
-      font-weight: 900;
-      text-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
-      margin: 0;
+    h3 {
+      margin-top: 20px;
+      color: #333;
+      border-bottom: 2px solid #667eea;
+      padding-bottom: 5px;
     }
 
-    .error-message {
-      font-size: 28px;
-      margin: 15px 0 30px;
+    h4 {
+      margin-top: 15px;
+      margin-bottom: 10px;
+      color: #444;
     }
 
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px 25px;
+      margin-bottom: 12px;
+    }
+
+    .field {
+      display: flex;
+      align-items: center;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    label {
+      font-size: 14px;
+      color: #222;
+      margin-right: 6px;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    input[type="date"] {
+      width: 100px;
+      padding: 4px 6px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 13px;
+      flex-shrink: 0;
+    }
+
+    /* Button Styling */
     button {
+      margin-top: 20px;
       background: linear-gradient(135deg, #667eea, #764ba2);
       color: white;
-      padding: 15px 40px;
-      font-size: 18px;
+      padding: 10px 30px;
+      font-size: 16px;
       font-weight: 600;
       border: none;
       border-radius: 50px;
       cursor: pointer;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
       transition: all 0.3s ease-in-out;
     }
 
     button:hover {
       transform: scale(1.05);
       background: linear-gradient(135deg, #764ba2, #667eea);
-      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.3);
     }
 
     button:active {
@@ -94,22 +129,161 @@
       color: white;
       text-align: center;
       font-size: 14px;
-      box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 -4px 10px rgba(0,0,0,0.2);
+      margin-top: auto;
     }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {height: 8px;width: 8px;}
+    ::-webkit-scrollbar-thumb {background: #667eea;border-radius: 6px;}
   </style>
 </head>
 <body>
   <!-- Navbar -->
-  <div class="navbar">HSD Table Calculation</div>
+  <div class="navbar">Below 85 °F / 29.44 °C</div>
 
-  <!-- Content -->
-  <div class="content">
-    <h1 class="error-code">404</h1>
-    <p class="error-message">Oops! The page you are looking for doesn't exist.</p>
-    <button onclick="window.location.href='index.html'">Go Back Home</button>
-  </div>
+  <!-- Form Content -->
+  <form>
+    <h3>Tanker Data</h3>
+    <div class="row">
+      <div class="field"><label>Supplier:</label><input type="text" required id="supplier"></div>
+      <div class="field"><label>Ordered Quantity @ 85°F:</label><input type="number" required id="ordered_quantity"></div>
+      <div class="field"><label>Date:</label><input type="date" required id="date"></div>
+      <div class="field"><label>Tanker Number:</label><input type="text" required id="tanker_number"></div>
+      <div class="field"><label>Tanker Cal. Cert. No.:</label><input type="text" required id="tanker_cert_num"></div>
+      <div class="field"><label>Calibration Validity Date:</label><input type="date" required id="cal_validity_date"></div>
+      <div class="field"><label>No. of Chambers:</label><input type="number" required id="no_of_chambers" min="1" max="4"></div>
+    </div>
+
+    <h3>Tanker Dip Chart Information</h3>
+    <h4>For Chamber 1</h4>
+    <div class="row">
+      <div class="field"><label>Reference Dip:</label><input type="number" required value="0" id="reference_dip_chamber_1"></div>
+      <div class="field"><label>Final Dip with All Tanker full,mm:</label><input type="number" required value="0" id="final_dip_chamber_1"></div>
+      <div class="field"><label>Tank Capacity Litr:</label><input type="number" required value="0" id="tank_capacity_chamber_1"></div>
+    </div>
+
+    <h4>For Chamber 2</h4>
+    <div class="row">
+      <div class="field"><label>Reference Dip:</label><input type="number" required value="0" id="reference_dip_chamber_2"></div>
+      <div class="field"><label>Final Dip with All Tanker full,mm:</label><input type="number" required value="0" id="final_dip_chamber_2"></div>
+      <div class="field"><label>Tank Capacity Litr:</label><input type="number" required value="0" id="tank_capacity_chamber_2"></div>
+    </div>
+
+    <h4>For Chamber 3</h4>
+    <div class="row">
+      <div class="field"><label>Reference Dip:</label><input type="number" required value="0" id="reference_dip_chamber_3"></div>
+      <div class="field"><label>Final Dip with All Tanker full,mm:</label><input type="number" required value="0" id="final_dip_chamber_3"></div>
+      <div class="field"><label>Tank Capacity Litr:</label><input type="number" required value="0" id="tank_capacity_chamber_3"></div>
+    </div>
+
+    <h4>For Chamber 4</h4>
+    <div class="row">
+      <div class="field"><label>Reference Dip:</label><input type="number" required value="0" id="reference_dip_chamber_4"></div>
+      <div class="field"><label>Final Dip with All Tanker full,mm:</label><input type="number" required value="0" id="final_dip_chamber_4"></div>
+      <div class="field"><label>Tank Capacity Litr:</label><input type="number" required value="0" id="tank_capacity_chamber_4"></div>
+    </div>
+
+    <h3>Dispatch Particulars</h3>
+    <h4>For Chamber 1</h4>
+    <div class="row">
+      <div class="field"><label>Product Dip:</label><input type="number" required value="0" id="product_dip_chamber_1"></div>
+      <div class="field"><label>Temperature in °C:</label><input type="number" required value="0" id="temperature_in_C_chamber_1"></div>
+      <div class="field"><label>Density:</label><input type="number" required value="0" id="density_chamber_1"></div>
+    </div>
+
+    <h4>For Chamber 2</h4>
+    <div class="row">
+      <div class="field"><label>Product Dip:</label><input type="number" required value="0" id="product_dip_chamber_2"></div>
+      <div class="field"><label>Temperature in °C:</label><input type="number" required value="0" id="temperature_in_C_chamber_2"></div>
+      <div class="field"><label>Density:</label><input type="number" required value="0" id="density_chamber_2"></div>
+    </div>
+
+    <h4>For Chamber 3</h4>
+    <div class="row">
+      <div class="field"><label>Product Dip:</label><input type="number" required value="0" id="product_dip_chamber_3"></div>
+      <div class="field"><label>Temperature in °C:</label><input type="number" required value="0" id="temperature_in_C_chamber_3"></div>
+      <div class="field"><label>Density:</label><input type="number" required value="0" id="density_chamber_3"></div>
+    </div>
+
+    <h4>For Chamber 4</h4>
+    <div class="row">
+      <div class="field"><label>Product Dip:</label><input type="number" required value="0" id="product_dip_chamber_4"></div>
+      <div class="field"><label>Temperature in °C:</label><input type="number" required value="0" id="temperature_in_C_chamber_4"></div>
+      <div class="field"><label>Density:</label><input type="number" required value="0" id="density_chamber_4"></div>
+    </div>
+
+    <h3>Reciept Particulars</h3>
+    <h4>For Chamber 1</h4>
+    <div class="row">
+      <div class="field"><label>Reference Dip:</label><input type="number" required value="0" id="receipt_reference_dip_chamber_1"></div>
+      <div class="field"><label>Product Dip:</label><input type="number" required value="0" id="receipt_product_dip_chamber_1"></div>
+      <div class="field"><label>Product Recieving Temp in °C:</label><input type="number" required value="0" id="receipt_temperature_in_C_chamber_1"></div>
+      <div class="field"><label>Density:</label><input type="number" required value="0" id="receipt_density_chamber_1"></div>
+    </div>
+
+    <h4>For Chamber 2</h4>
+    <div class="row">
+      <div class="field"><label>Reference Dip:</label><input type="number" required value="0" id="receipt_reference_dip_chamber_2"></div>
+      <div class="field"><label>Product Dip:</label><input type="number" required value="0" id="receipt_product_dip_chamber_2"></div>
+      <div class="field"><label>Product Recieving Temp in °C:</label><input type="number" required value="0" id="receipt_temperature_in_C_chamber_2"></div>
+      <div class="field"><label>Density:</label><input type="number" required value="0" id="receipt_density_chamber_2"></div>
+    </div>
+
+    <h4>For Chamber 3</h4>
+    <div class="row">
+      <div class="field"><label>Reference Dip:</label><input type="number" required value="0" id="receipt_reference_dip_chamber_3"></div>
+      <div class="field"><label>Product Dip:</label><input type="number" required value="0" id="receipt_product_dip_chamber_3"></div>
+      <div class="field"><label>Product Recieving Temp in °C:</label><input type="number" required value="0" id="receipt_temperature_in_C_chamber_3"></div>
+      <div class="field"><label>Density:</label><input type="number" required value="0" id="receipt_density_chamber_3"></div>
+    </div>
+
+    <h4>For Chamber 4</h4>
+    <div class="row">
+      <div class="field"><label>Reference Dip:</label><input type="number" required value="0" id="receipt_reference_dip_chamber_4"></div>
+      <div class="field"><label>Product Dip:</label><input type="number" required value="0" id="receipt_product_dip_chamber_4"></div>
+      <div class="field"><label>Product Recieving Temp in °C:</label><input type="number" required value="0" id="receipt_temperature_in_C_chamber_4"></div>
+      <div class="field"><label>Density:</label><input type="number" required value="0" id="receipt_density_chamber_4"></div>
+    </div>
+
+    <h3>From Delivered Weighbridge Slip</h3>
+    <div class="row">
+      <div class="field"><label>Gross Weight:</label><input type="number" required value="0" id="delivered_gross_weight"></div>
+      <div class="field"><label>Tare Weight:</label><input type="number" required value="0" id="delivered_tare_weight"></div>
+    </div>
+
+    <h3>From Received Weighbridge Slip (HUBCO)</h3>
+    <div class="row">
+      <div class="field"><label>Gross Weight:</label><input type="number" required value="0" id="Recieved_gross_weight"></div>
+      <div class="field"><label>Tare Weight:</label><input type="number" required value="0" id="Recieved_tare_weight"></div>
+    </div>
+
+    <h3>HUB Diesel Flow Meter & Tank Level Reading</h3>
+    <h4>For Chamber 2</h4>
+    <div class="row">
+      <div class="field"><label>Flow meter reading before tanker decanting:</label><input type="number" required value="0" id="flow_meter_reading_before_chamber_2"></div>
+      <div class="field"><label>Flow meter reading after tanker decanting:</label><input type="number" required value="0" id="flow_meter_reading_after_chamber_2"></div>
+      <div class="field"><label>Tank level before tanker decanting:</label><input type="number" required value="0" id="tank_level_before_chamber_2"></div>
+      <div class="field"><label>Tank level after tanker decanting:</label><input type="number" required value="0" id="tank_level_after_chamber_2"></div>
+    </div>
+
+    <h4>For Chamber 1</h4>
+    <div class="row">
+      <div class="field"><label>Flow meter reading after tanker decanting:</label><input type="number" required value="0" id="flow_meter_reading_after_chamber_1"></div>
+      <div class="field"><label>Tank level after tanker decanting:</label><input type="number" required value="0" id="tank_level_after_chamber_1"></div>
+    </div>
+
+    <br>
+    <button type="button" onclick="check()">Submit & Generate Report</button>
+    <p id="Check"></p>
+  </form>
 
   <!-- Footer -->
   <div class="footer">&copy; By Syed Aqeel Ahmed</div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+
+  <script src="Below_85_Degrees.js"></script>
 </body>
 </html>
